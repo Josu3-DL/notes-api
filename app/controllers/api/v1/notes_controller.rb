@@ -3,16 +3,7 @@ class Api::V1::NotesController < ApplicationController
 
   def index
     notes = Note.order(created_at: :desc).page(params[:page]).per(params[:per_page])
-    render json: { 
-      notes: notes,
-      meta: {
-        current_page: notes.current_page,
-        next_page: notes.next_page,
-        prev_page: notes.prev_page,
-        total_pages: notes.total_pages,
-        total_notes: notes.total_count
-      }
-    }
+    render_with_pagination(notes)
   end
 
   def create
@@ -46,17 +37,17 @@ class Api::V1::NotesController < ApplicationController
 
   def by_title 
     notes = Note.by_title(params[:title]).page(params[:page]).per(params[:per_page])
-    render json: notes
+    render_with_pagination(notes)
   end
 
   def by_status
     notes = Note.by_status(params[:status]).page(params[:page]).per(params[:per_page])
-    render json: notes
+    render_with_pagination(notes)
   end
 
   def by_priority
     notes = Note.by_priority(params[:priority]).page(params[:page]).per(params[:per_page])
-    render json: notes
+    render_with_pagination(notes)
   end
 
   private
@@ -66,5 +57,18 @@ class Api::V1::NotesController < ApplicationController
 
   def set_note
     @note = Note.find(params[:id])
+  end
+
+  def render_with_pagination(collection)
+    render json: {
+      collection: collection,
+      meta: {
+        current_page: collection.current_page,
+        next_page: collection.next_page,
+        prev_page: collection.prev_page,
+        total_pages: collection.total_pages,
+        total_collection: collection.total_count
+      }
+    }
   end
 end
