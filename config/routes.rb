@@ -5,7 +5,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :notes
+      resources :notes do
+        collection do
+          get :by_title
+          get :by_status
+          get :by_priority
+        end
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

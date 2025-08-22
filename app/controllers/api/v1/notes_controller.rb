@@ -44,9 +44,24 @@ class Api::V1::NotesController < ApplicationController
     end
   end
 
+  def by_title 
+    notes = Note.by_title(params[:title]).page(params[:page]).per(params[:per_page])
+    render json: notes
+  end
+
+  def by_status
+    notes = Note.by_status(params[:status]).page(params[:page]).per(params[:per_page])
+    render json: notes
+  end
+
+  def by_priority
+    notes = Note.by_priority(params[:priority]).page(params[:page]).per(params[:per_page])
+    render json: notes
+  end
+
   private
   def note_params
-    params.permit(:title, :content)
+    params.permit(:title, :content, :status, :priority)
   end
 
   def set_note
