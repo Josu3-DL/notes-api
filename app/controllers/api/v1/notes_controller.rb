@@ -50,6 +50,14 @@ class Api::V1::NotesController < ApplicationController
     render_with_pagination(notes)
   end
 
+  def multi_filter
+    notes = Note.all
+    notes = notes.by_title(params[:title])
+    notes = notes.by_status(params[:status])
+    notes = notes.by_priority(params[:priority])
+    render json: notes
+  end
+
   private
   def note_params
     params.permit(:title, :content, :status, :priority)

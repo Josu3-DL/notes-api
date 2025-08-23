@@ -10,6 +10,7 @@ Rails.application.routes.draw do
           get :by_title
           get :by_status
           get :by_priority
+          get :multi_filter
         end
       end
     end
